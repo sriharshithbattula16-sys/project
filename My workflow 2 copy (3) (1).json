@@ -1,0 +1,404 @@
+{
+  "name": "My workflow 2 copy",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        64
+      ],
+      "id": "e461bb4c-19a4-47ff-b5c0-4f8b44adcd7a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        288
+      ],
+      "id": "395f534e-9640-462e-8bac-90d40a3cb874",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a strict Retrieval-Augmented Generation (RAG) agent.\n\nBefore generating ANY question, you MUST call the Supabase Vector Store tool.\n\nYou are NOT allowed to answer without first retrieving content.\n\nIf retrieval returns no results, respond:\n\"No syllabus content found in vector store.\"\n\nNever answer from general knowledge.\nQuestion Type Handling Rules:\n\n1. If the user clearly specifies:\n   - \"MCQ\" → Generate MCQs.\n   - \"Descriptive\" → Generate descriptive questions.\n\n2. If the user does NOT specify question type:\n   - Ask a clarification question:\n     \"Do you want MCQ or Descriptive questions?\"\n\n3. Never assume question type.\n4. Never default to MCQ."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -320,
+        -544
+      ],
+      "id": "f90d2b0e-4f5e-4b16-ab44-b65977168b94",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use this tool to retrieve syllabus and academic content.\nYou must send input as a JSON object with this format:\n{\n  \"query\": \"user question here\"\n}",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "useReranker": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        96,
+        -400
+      ],
+      "id": "b5d6bcff-3867-42ea-84d5-cad4717a1459",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "L8e7cKqiyhOLHmhB",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -704,
+        -416
+      ],
+      "id": "199e1040-dab1-4a51-8772-24ee897b1622",
+      "name": "When chat message received",
+      "webhookId": "fb2fc2d9-0818-4d31-b5d8-5408d6f8a1e9"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -208
+      ],
+      "id": "54eb9edf-d7d2-413e-9b8c-ddfb48079e6a",
+      "name": "Embeddings HuggingFace Inference",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "HPhenQp0qlhJo7xP",
+          "name": "HuggingFaceApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        272
+      ],
+      "id": "3f5a7849-d64b-4427-82b9-9cf7c780fb2c",
+      "name": "Embeddings HuggingFace Inference1",
+      "credentials": {
+        "huggingFaceApi": {
+          "id": "HPhenQp0qlhJo7xP",
+          "name": "HuggingFaceApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        -320
+      ],
+      "id": "d3a7a913-ec8d-46ad-b53a-5d2527f0918c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rhJ5iqqeoAyElrJL",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        32
+      ],
+      "id": "9bb57187-90ba-4b85-8e75-2ba7d37918fc",
+      "name": "supa base vector store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "L8e7cKqiyhOLHmhB",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.rerankerCohere",
+      "typeVersion": 1,
+      "position": [
+        192,
+        -192
+      ],
+      "id": "54874139-2bc1-4812-8ddf-f4877d10f575",
+      "name": "Reranker Cohere",
+      "credentials": {
+        "cohereApi": {
+          "id": "iCNlMijl1x2H1OMH",
+          "name": "CohereApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -256,
+        -304
+      ],
+      "id": "f72f92be-b2dd-45ab-a75a-c62e7bbfa183",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "AntAwPgmYNScKqrT",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "'1sRClZrG_zPSWmsYdrw5odDU_99vc1287' in parents and mimeType='application/pdf'",
+        "returnAll": true,
+        "filter": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -512,
+        64
+      ],
+      "id": "33d763c9-bbe1-4791-b584-757fe3475ffc",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "guHMBDZHggYfQRAh",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{$json[\"id\"]}}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -272,
+        48
+      ],
+      "id": "585eae1b-d8c8-480d-9348-8b5055e5db96",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "guHMBDZHggYfQRAh",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "supa base vector store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings HuggingFace Inference1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "supa base vector store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "supa base vector store": {
+      "main": [
+        []
+      ]
+    },
+    "Reranker Cohere": {
+      "ai_reranker": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_reranker",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "supa base vector store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "984f727f-b829-4696-9e43-e525b925715c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cf0c22d5398d8fcd2e5e7220275f915842b6f74e83d7edf34877bdf77e1095fd"
+  },
+  "id": "IULB7GaaBw4X0oxz",
+  "tags": []
+}
