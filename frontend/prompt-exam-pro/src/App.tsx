@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 import GenerateQuestions from "./pages/faculty/GenerateQuestions";
+import CreateExam from "./pages/faculty/CreateExam";
 import ExamManagement from "./pages/faculty/ExamManagement";
 import FacultyResults from "./pages/faculty/FacultyResults";
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -45,6 +46,7 @@ const App = () => (
 
             {/* Faculty Routes */}
             <Route path="/faculty" element={<FacultyLayout><FacultyDashboard /></FacultyLayout>} />
+            <Route path="/faculty/create-exam" element={<FacultyLayout><CreateExam /></FacultyLayout>} />
             <Route path="/faculty/generate" element={<FacultyLayout><GenerateQuestions /></FacultyLayout>} />
             <Route path="/faculty/exams" element={<FacultyLayout><ExamManagement /></FacultyLayout>} />
             <Route path="/faculty/results" element={<FacultyLayout><FacultyResults /></FacultyLayout>} />

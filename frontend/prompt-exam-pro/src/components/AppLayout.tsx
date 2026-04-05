@@ -23,7 +23,8 @@ interface NavItem {
 
 const FACULTY_NAV: NavItem[] = [
   { label: "Dashboard", path: "/faculty", icon: <LayoutDashboard size={18} /> },
-  { label: "Generate Questions", path: "/faculty/generate", icon: <Sparkles size={18} /> },
+  { label: "Create Exam", path: "/faculty/create-exam", icon: <Sparkles size={18} /> },
+  { label: "Generate Questions", path: "/faculty/generate", icon: <BookOpen size={18} /> },
   { label: "Manage Exams", path: "/faculty/exams", icon: <ClipboardList size={18} /> },
   { label: "Results", path: "/faculty/results", icon: <BarChart3 size={18} /> },
 ];

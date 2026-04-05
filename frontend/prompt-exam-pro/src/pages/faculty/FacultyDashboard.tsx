@@ -49,10 +49,10 @@ const FacultyDashboard = () => {
             <Sparkles size={22} />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold">Generate New Questions</h3>
-            <p className="text-sm text-muted-foreground">Use AI to create exam questions from a simple prompt.</p>
+            <h3 className="font-semibold">Create New Exam</h3>
+            <p className="text-sm text-muted-foreground">Upload syllabus and generate questions with AI, or add questions manually.</p>
           </div>
-          <Link to="/faculty/generate">
+          <Link to="/faculty/create-exam">
             <Button className="gap-2">
               Get Started <ArrowRight size={16} />
             </Button>
